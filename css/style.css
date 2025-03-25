@@ -38,7 +38,7 @@ div.toDo-input input {
     border: 2px solid #f5c14f;
     border-radius: 5px;
     color: grey;
-    padding: 3px;
+    padding: 5px;
 }
 
 div.toDoApp button {
@@ -73,4 +73,54 @@ p.statusAlert {
     border-radius: 5px;
 }
 
+table {
+    width: 70%;
+    margin: auto;
+    text-align: center;
+}
 
+tr {
+    height: 40px;
+}
+
+th {
+    background-color: #d5d4d4;
+}
+
+th:first-of-type {
+    border-top-left-radius: 10px;
+}
+
+th:last-of-type {
+    border-top-right-radius: 10px;
+}
+
+td {
+    background-color: #edeaea;
+}
+
+table button {
+    width: max-content;
+    padding: 5px;
+    border: 0;
+    border-radius: 5px;
+}
+
+.edit {
+    background-color: #faba31;
+}
+.edit:hover {
+    cursor: pointer;
+}
+.do {
+    background-color: rgb(28, 201, 28);
+}
+.do:hover {
+    cursor: pointer;
+}
+.delete {
+    background-color: rgb(255, 77, 77);
+}
+.delete:hover {
+    cursor: pointer;
+}
