@@ -7,7 +7,69 @@
     <link rel="stylesheet" href="./css/style.css"/>
 </head>
 <body>
-    
+    <div class="toDoApp">
+        <h1>Todo App | by Mojtaba Nabid</h1>
+        <div class="toDo-input">
+            <input type="text" placeholder="Add todo ..."/>
+            <input type="date" />
+            <button type="button">Add</button>
+        </div>
+        <div class="buttons">
+            <div>
+                <button>All</button>
+                <button>Pending</button>
+                <button>Completed</button>
+            </div>
+            <button>Delete All</button>
+        </div>
+    </div>
+    <p class="statusAlert">Todo added successfully</p>
+    <div class="taskList">
+        <table>
+            <th>
+                <td>Task</td>
+                <td>Date</td>
+                <td>Status</td>
+                <td>Actions</td>
+            </th>
+           <tr>
+                <td>Record modular Javascript</td>
+                <td>2025-08-28</td>
+                <td>Pending</td>
+                <td>
+                    <div>
+                        <button>Edit</button>
+                        <button>Do</button>
+                        <button>Delete</button>
+                    </div>
+               </td>
+            </tr>
+            <tr>
+                <td>Record Javascript API</td>
+                <td>2025-08-28</td>
+                <td>Pending</td>
+                <td>
+                    <div>
+                        <button>Edit</button>
+                        <button>Do</button>
+                        <button>Delete</button>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>add new feature to the site</td>
+                <td>2025-08-28</td>
+                <td>Pending</td>
+                <td>
+                    <div>
+                        <button>Edit</button>
+                        <button>Do</button>
+                        <button>Delete</button>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
 
     <script src="./js/app.js"></script>
 </body>
