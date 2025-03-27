@@ -1,81 +1,94 @@
 // selecting the Add button
 const toDoAddButton = document.querySelector(".toDo-input").children[2];
-const deleteAll = document.querySelector(".buttons").children[1]
-const allPendingCompleted = document.querySelector(".buttons").children[0]
-console.log(allPendingCompleted);
+const deleteAll = document.querySelector(".buttons").children[1];
+const allPendingCompleted = document.querySelector(".buttons").children[0];
+// console.log(allPendingCompleted.children);
+
 // localStorage.clear()
-let taskData = {}; // every task should be stored in an object and then send to localstorage
-if (!localStorage.getItem("taskData")) {
-  localStorage.setItem("taskData", JSON.stringify(taskData));
-}
-// because there are 3 data that already stored in the local storage (by default)
-// I have to subsitute them to reach the length of my data
-// I think, these data come from live server extension in VScode
-let counter = Object.keys(JSON.parse(localStorage.getItem("taskData"))).length;
-console.log("Number of data stored in the local storage: ", counter);
+
+// if (!localStorage.getItem("taskData")) {
+//   // check if there is any taskData data in local storage
+//   localStorage.setItem("taskData", JSON.stringify(taskData)); // if there is not => add one
+// }
+// counter is the number of data stored in taskData object
 
 const createList = () => {
   const tasks = JSON.parse(localStorage.getItem("taskData")); // getting back data from local storage
-//   console.log(newTask[`task${counter}`]);
+  //   console.log("tasks inside creatList function: ", tasks);
+  //   console.log(newTask[`task${counter}`]);
   // selecting the table node
   const table = document.querySelector("table");
-  const tbody = table.querySelector("tbody")
-  tbody.innerHTML = ""
-//   console.log(tasks);
+  const tbody = table.querySelector("tbody");
+  tbody.innerHTML = "";
+
+  //   console.log(tasks);
   for (let task in tasks) {
     // console.log(task);
-      // adding new row to the table
-      const newRow = document.createElement("tr");
-      tbody.appendChild(newRow);
-    
-      // creating Name cell
-      const newTaskName = document.createElement("td");
-      newTaskName.innerText = tasks[task].taskName; // adding the new task name into its cell
-      tbody.lastChild.appendChild(newTaskName);
-    
-      // creating date cell
-      const newTaskDate = document.createElement("td");
-      newTaskDate.innerText = tasks[task].taskDate;
-      tbody.lastChild.appendChild(newTaskDate);
-    
-      // creating status cell
-      const newTaskStatus = document.createElement("td");
-      newTaskStatus.innerText = tasks[task].taskStatus;
-      tbody.lastChild.appendChild(newTaskStatus);
-    
-      // creating Action cell
-      const newTaskAction = document.createElement("td");
-    
-      // creating Edit-Do-Delete buttons
-      const editButton = document.createElement("button");
-      editButton.innerText = "Edit";
-      const doButton = document.createElement("button");
-      doButton.innerText = "Do";
-      const deleteButton = document.createElement("button");
-      deleteButton.innerText = "Delete";
-    
-      // adding classes to the edit-do-delete buttons
-      editButton.classList.add("edit");
-      doButton.classList.add("do");
-      deleteButton.classList.add("delete");
-    
-      // adding buttons to their cell
-      newTaskAction.appendChild(editButton);
-      newTaskAction.appendChild(doButton);
-      newTaskAction.appendChild(deleteButton);
-    
-      // adding action cell to the row
-      tbody.lastChild.appendChild(newTaskAction);
+    // adding new row to the table
+    const newRow = document.createElement("tr");
+    tbody.appendChild(newRow);
 
+    // creating Name cell
+    const newTaskName = document.createElement("td");
+    newTaskName.innerText = tasks[task].taskName; // adding the new task name into its cell
+    tbody.lastChild.appendChild(newTaskName);
+
+    // creating date cell
+    const newTaskDate = document.createElement("td");
+    newTaskDate.innerText = tasks[task].taskDate;
+    tbody.lastChild.appendChild(newTaskDate);
+
+    // creating status cell
+    const newTaskStatus = document.createElement("td");
+    newTaskStatus.innerText = tasks[task].taskStatus;
+    tbody.lastChild.appendChild(newTaskStatus);
+
+    // creating Action cell
+    const newTaskAction = document.createElement("td");
+
+    // creating Edit-Do-Delete buttons
+    const editButton = document.createElement("button");
+    editButton.innerText = "Edit";
+    const doButton = document.createElement("button");
+    doButton.innerText = "Do";
+    const deleteButton = document.createElement("button");
+    deleteButton.innerText = "Delete";
+
+    // adding classes to the edit-do-delete buttons
+    editButton.classList.add("edit");
+    doButton.classList.add("do");
+    deleteButton.classList.add("delete");
+
+    // adding buttons to their cell
+    newTaskAction.appendChild(editButton);
+    newTaskAction.appendChild(doButton);
+    newTaskAction.appendChild(deleteButton);
+
+    // adding action cell to the row
+    tbody.lastChild.appendChild(newTaskAction);
   }
-  
+  // const rows = document.querySelector("tbody").querySelectorAll("tr")
+  // console.log(rows);
+  // for(let row of rows) {
+  //     if(row.children[2].innerHTML === "Pending") {
+  //       row.dataset.status = "pending"
+  //     } else if (row.children[2].innerHTML === "Completed") {
+  //       newRow.dataset.status = "completed"
+  //     }
+  // }
 };
 
+
 const toDoHandler = (event) => {
-  counter++;
+  let taskData = {};
+
   const toDoName = document.querySelector(".toDo-input").children[0].value;
   const toDoDate = document.querySelector(".toDo-input").children[1].value;
   if (localStorage.getItem("taskData")) {
+    let counter = Object.keys(
+      JSON.parse(localStorage.getItem("taskData"))
+    ).length;
+    counter++;
     taskData = JSON.parse(localStorage.getItem("taskData"));
     taskData[`task${counter}`] = {
       taskNumber: counter,
@@ -84,6 +97,7 @@ const toDoHandler = (event) => {
       taskStatus: "pending",
     };
   } else {
+    let counter = 0;
     taskData[`task${counter}`] = {
       taskNumber: counter,
       taskName: toDoName,
@@ -103,23 +117,40 @@ const toDoHandler = (event) => {
   document.querySelector(".toDo-input").children[0].value = "";
   document.querySelector(".toDo-input").children[1].value = "";
 
-  createList()
+  createList();
 };
 
 const deleteAllHandler = (event) => {
-    localStorage.clear()
-    createList()
-}
-const allHandler = (event) => {
-    createList
-}
+  localStorage.clear();
+  createList();
+};
 
-createList()
 
+const filterHandler = (event) => {
+  if (event.target.dataset.filter === "all") {
+    createList();
+  } else if (event.target.dataset.filter === "pending") {
+    // const tasks = JSON.parse(localStorage.getItem("taskData"))
+    // for (let task in tasks)
+    //     if(tasks[task].taskStatus === "pending"){
+    //         console.log(true);
+    //     }
+    document.querySelectorAll("td");
+  }
+  // else {
+
+  // }
+
+  // const buttons = document.querySelectorAll("div.buttons button")
+  // console.log(object);
+};
+
+createList();
 
 // add event listener for Add button
 toDoAddButton.addEventListener("click", toDoHandler);
 deleteAll.addEventListener("click", deleteAllHandler);
-allPendingCompleted.children[0].addEventListener("click", allHandler)
-allPendingCompleted.children[1].addEventListener("click", pendingHandler)
-allPendingCompleted.children[2].addEventListener("click", completedHandler)
+
+for (let element of allPendingCompleted.children) {
+  element.addEventListener("click", filterHandler);
+}
