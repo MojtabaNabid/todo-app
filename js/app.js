@@ -67,17 +67,17 @@ const createList = () => {
     // adding action cell to the row
     tbody.lastChild.appendChild(newTaskAction);
   }
-  // const rows = document.querySelector("tbody").querySelectorAll("tr")
-  // console.log(rows);
-  // for(let row of rows) {
-  //     if(row.children[2].innerHTML === "Pending") {
-  //       row.dataset.status = "pending"
-  //     } else if (row.children[2].innerHTML === "Completed") {
-  //       newRow.dataset.status = "completed"
-  //     }
-  // }
+  const rows = document.querySelector("tbody").querySelectorAll("tr");
+  for (let row of rows) {
+    const status = row.children[2].innerText;
+    if (row.children[2].innerText === status) {
+      row.dataset.status = "pending";
+    //   console.log(row);
+    } else if (row.children[2].innerHTML === "completed") {
+      newRow.dataset.status = "completed";
+    }
+  }
 };
-
 
 const toDoHandler = (event) => {
   let taskData = {};
@@ -125,11 +125,15 @@ const deleteAllHandler = (event) => {
   createList();
 };
 
-
 const filterHandler = (event) => {
   if (event.target.dataset.filter === "all") {
     createList();
   } else if (event.target.dataset.filter === "pending") {
+    console.log(true);
+    const rows = document.querySelectorAll("tr");
+    for (let row of rows) {
+        if (row.dataset.status){}
+        }
     // const tasks = JSON.parse(localStorage.getItem("taskData"))
     // for (let task in tasks)
     //     if(tasks[task].taskStatus === "pending"){
