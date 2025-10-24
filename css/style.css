@@ -1,70 +1,90 @@
+:root {
+    --color-primary: #f9d72f;
+    --color-background: #e6e6e6;
+    --color-task: #f7f7f7;
+    --color-success: #36d39a;
+    --color-warning: #fbbe23;
+    --color-error: #f87171;
+}
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
-body {
-    font-family: Arial, Helvetica, sans-serif;
+body { 
+    max-width: 1000px;
+    margin: auto;
     /* font-size: 1.2em; */
 }
 
-div.toDoApp {
-    width: 70%;
-    margin: 3rem auto;
-    text-align: center;
-    box-shadow: 0 0 3cqi #888 ;
-    border-radius: 10px;
-    padding: 20px;
-    margin-bottom: 10px;
-}
-
-h1 {
-    font-size: 1.8rem;
-    margin-bottom: 1rem;
-}
-
-div.toDo-input {
+div.container {
     width: 100%;
-    padding: 10px 0;
+    margin: 40px auto 10px;
+    padding: 20px;
     display: flex;
-    justify-content: center;
-    gap: 10px;
+    flex-direction: column;
+    align-items: center;
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.3) ;
+    border-radius: 10px;
+    border: 1px solid rgba(255,2555,255,0.18);
 }
 
-div.toDo-input input {
-    flex-grow: 1;
-    height: 40px;
-    border: 2px solid #f5c14f;
-    border-radius: 5px;
-    color: grey;
-    padding: 5px;
+h2 {
+    font-size: 1.5rem;
+    margin-bottom: 30px;
 }
 
-div.toDoApp button {
-    width: 50px;
-    height: 40px;
-    background-color: #f5c14f;
-    border: 0;
-    border-radius: 5px;
-}
-div.buttons {
+div.input-section {
+    width: 100%;
     display: flex;
-    margin-top: 2rem;
     justify-content: space-between;
+    margin-bottom: 40px;
 }
 
-div.buttons button {
-    width: max-content;
+div.input-section input {
+    margin-right: 10px;
+    width: 100%;
+    border: var(--color-primary) 1px solid;
+    border-radius: 5px;
     padding: 10px;
+    color: grey;
+}
+
+.input-section input:focus {
+    outline: none;
+    border-width: 2px;
+}
+
+
+button {
+    background-color: var(--color-primary);
+    border: none;
+    cursor: pointer;
+    padding: 10px 15px;
+    border-radius: 5px;
+}
+button:hover {
+    opacity: 0.8;
+}
+
+.todos-operator {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
 }
 div.buttons > button {
     background-color: rgb(255, 77, 77);
     font-weight: bold;
 }
+#delete-all-button {
+    background-color: var(--color-error);
+}
 
 p.statusAlert {
-    width: 70%;
+    width: 100%;
     background-color: lightgreen;
     height: 40px;
     line-height: 40px;
@@ -74,54 +94,46 @@ p.statusAlert {
 }
 
 table {
-    width: 70%;
-    margin: auto;
-    text-align: center;
+    width: 100%;
+    /* margin: auto; */
+    /* text-align: center; */
 }
 
-tr {
-    height: 40px;
+thead {
+    background-color: var(--color-background);
 }
 
-th {
-    background-color: #d5d4d4;
+thead th {
+    padding: 10px;
 }
 
-th:first-of-type {
+thead th:first-of-type {
     border-top-left-radius: 10px;
 }
 
-th:last-of-type {
+thead th:last-of-type {
     border-top-right-radius: 10px;
 }
 
-td {
-    background-color: #edeaea;
+tbody td {
+    background-color: var(--color-task);
+    padding: 5px 10px;
+    text-align: center;
 }
 
-table button {
-    width: max-content;
-    padding: 5px;
-    border: 0;
-    border-radius: 5px;
-    margin-left: 5px;
+tbody td button {
+    padding: 4px 8px;
+    margin: 2px 5px;
 }
 
-.edit {
-    background-color: #f5c14f;
+tbody td button:nth-child(1) {
+    background-color: var(--color-warning);
 }
-.edit:hover {
-    cursor: pointer;
+
+tbody td button:nth-child(2) {
+    background-color: var(--color-success);
 }
-.do {
-    background-color: rgb(28, 201, 28);
-}
-.do:hover {
-    cursor: pointer;
-}
-.delete {
-    background-color: rgb(255, 77, 77);
-}
-.delete:hover {
-    cursor: pointer;
+
+tbody td button:nth-child(3) {
+    background-color: var(--color-error);
 }

@@ -1,20 +1,10 @@
-// selecting the Add button
-const toDoAddButton = document.querySelector(".toDo-input").children[2];
-const deleteAll = document.querySelector(".buttons").children[1];
-const allPendingCompleted = document.querySelector(".buttons").children[0];
-// console.log(allPendingCompleted.children);
-
-// localStorage.clear()
-
-// if (!localStorage.getItem("taskData")) {
-//   // check if there is any taskData data in local storage
-//   localStorage.setItem("taskData", JSON.stringify(taskData)); // if there is not => add one
-// }
-// counter is the number of data stored in taskData object
+const taskInput = document.getElementById("task-input");  // selecting task input
+const taskDate = document.getElementById("date-input");   // selecting date input
+const addButton = document.getElementById("add-button");  // selecting the Add button
 
 const createList = () => {
   const tasks = JSON.parse(localStorage.getItem("taskData")); // getting back data from local storage
-  //   console.log("tasks inside creatList function: ", tasks);
+  console.log("tasks inside creatList function: ", tasks);
   //   console.log(newTask[`task${counter}`]);
   // selecting the table node
   const table = document.querySelector("table");
@@ -67,57 +57,27 @@ const createList = () => {
     // adding action cell to the row
     tbody.lastChild.appendChild(newTaskAction);
   }
+
+  // chera man in ghesmat payeen ta khat 83 ro neveshtam(!?)
   const rows = document.querySelector("tbody").querySelectorAll("tr");
+  // console.log(rows);
   for (let row of rows) {
     const status = row.children[2].innerText;
-    if (row.children[2].innerText === status) {
+    if (status === "pending") {
       row.dataset.status = "pending";
-    //   console.log(row);
+      // console.log(row);
     } else if (row.children[2].innerHTML === "completed") {
       newRow.dataset.status = "completed";
     }
   }
 };
 
-const toDoHandler = (event) => {
-  let taskData = {};
+let todos = {};
+const addHandler = (event) => {
 
-  const toDoName = document.querySelector(".toDo-input").children[0].value;
-  const toDoDate = document.querySelector(".toDo-input").children[1].value;
-  if (localStorage.getItem("taskData")) {
-    let counter = Object.keys(
-      JSON.parse(localStorage.getItem("taskData"))
-    ).length;
-    counter++;
-    taskData = JSON.parse(localStorage.getItem("taskData"));
-    taskData[`task${counter}`] = {
-      taskNumber: counter,
-      taskName: toDoName,
-      taskDate: toDoDate,
-      taskStatus: "pending",
-    };
-  } else {
-    let counter = 0;
-    taskData[`task${counter}`] = {
-      taskNumber: counter,
-      taskName: toDoName,
-      taskDate: toDoDate,
-      taskStatus: "pending",
-    };
-  }
+  const task = taskInput.value;
+  const date = taskDate.value;
 
-  //   task.taskNumber = counter;
-  //   task.taskName = toDoName;
-  //   task.taskDate = toDoDate;
-  //   task.taskStatus = "pending";
-  //   console.log(task);
-  localStorage.setItem(`taskData`, JSON.stringify(taskData)); // saving new task into the local storage
-
-  // make inputs empty after adding each todo task
-  document.querySelector(".toDo-input").children[0].value = "";
-  document.querySelector(".toDo-input").children[1].value = "";
-
-  createList();
 };
 
 const deleteAllHandler = (event) => {
@@ -132,8 +92,9 @@ const filterHandler = (event) => {
     console.log(true);
     const rows = document.querySelectorAll("tr");
     for (let row of rows) {
-        if (row.dataset.status){}
-        }
+      if (row.dataset.status) {
+      }
+    }
     // const tasks = JSON.parse(localStorage.getItem("taskData"))
     // for (let task in tasks)
     //     if(tasks[task].taskStatus === "pending"){
@@ -152,7 +113,7 @@ const filterHandler = (event) => {
 createList();
 
 // add event listener for Add button
-toDoAddButton.addEventListener("click", toDoHandler);
+addButton.addEventListener("click", addHandler);
 deleteAll.addEventListener("click", deleteAllHandler);
 
 for (let element of allPendingCompleted.children) {

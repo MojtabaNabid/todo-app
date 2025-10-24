@@ -7,24 +7,24 @@
     <link rel="stylesheet" href="./css/style.css"/>
 </head>
 <body>
-    <div class="toDoApp">
-        <h1>Todo App | by Mojtaba Nabid</h1>
-        <div class="toDo-input">
-            <input type="text" placeholder="Add todo ..."/>
-            <input type="date" />
-            <button type="button" data-category="health">Add</button>
+    <div class="container">
+        <h2>Todo App | by Mojtaba Nabid</h2>
+        <div class="input-section">
+            <input type="text" placeholder="Add todo ..."/ id="task-input">
+            <input type="date" id="date-input"/>
+            <button type="button" id="add-button" >Add</button>
         </div>
-        <div class="buttons">
+        <div class="todos-operator">
             <div>
-                <button data-filter="all">All</button>
-                <button data-filter="pending">Pending</button>
-                <button data-filter="completed">Completed</button>
+                <button class="filter-todos" data-filter="all">All</button>
+                <button class="filter-todos" data-filter="pending">Pending</button>
+                <button class="filter-todos" data-filter="completed">Completed</button>
             </div>
-            <button>Delete All</button>
+            <button id="delete-all-button">Delete All</button>
         </div>
     </div>
     <p class="statusAlert">Todo added successfully</p>
-    <div class="taskList">
+    <div class="table">
         <table>
             <thead>
                 <tr>
