@@ -75,22 +75,21 @@ button:hover {
     display: flex;
     justify-content: space-between;
 }
-div.buttons > button {
-    background-color: rgb(255, 77, 77);
-    font-weight: bold;
-}
+
 #delete-all-button {
     background-color: var(--color-error);
 }
 
-p.statusAlert {
+#alert-message {
     width: 100%;
-    background-color: lightgreen;
+    background-color: var(--color-success);
     height: 40px;
     line-height: 40px;
     text-align: center;
     margin: 10px auto;
     border-radius: 5px;
+    /* display: none; */
+    opacity: 0;
 }
 
 table {

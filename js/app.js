@@ -1,6 +1,8 @@
 const taskInput = document.getElementById("task-input");  // selecting task input
 const taskDate = document.getElementById("date-input");   // selecting date input
 const addButton = document.getElementById("add-button");  // selecting the Add button
+const alertMessage = document.getElementById("alert-message") // selecting the allert message
+
 
 const createList = () => {
   const tasks = JSON.parse(localStorage.getItem("taskData")); // getting back data from local storage
@@ -72,11 +74,29 @@ const createList = () => {
   }
 };
 
-let todos = {};
+let todos = [];
 const addHandler = (event) => {
 
   const task = taskInput.value;
   const date = taskDate.value;
+
+  const todo = {
+    task: task,
+    date: date,
+    completed: false,
+  }
+
+  if(task) {
+    todos.push(todo);
+    taskInput.value = "";
+    taskDate.value = "";
+    alertMessage.innerHTML = "<p>Task added!</p>";
+    alertMessage.style.display = block
+    console.log(todos);
+  } else {
+    alarm("please enter a task!");
+  }
+
 
 };
 
