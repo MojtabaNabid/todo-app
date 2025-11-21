@@ -1,9 +1,41 @@
-const taskInput = document.getElementById("task-input");  // selecting task input
-const taskDate = document.getElementById("date-input");   // selecting date input
-const addButton = document.getElementById("add-button");  // selecting the Add button
-const alertMessage = document.getElementById("alert-message") // selecting the allert message
+const taskInput = document.getElementById("task-input"); // selecting task input
+const taskDate = document.getElementById("date-input"); // selecting date input
+const addButton = document.getElementById("add-button"); // selecting the Add button
+const alertMessage = document.getElementById("alert-message"); // selecting the alert message
+const deleteAll = document.getElementById("delete-all-button");
 
+// create uniqe Id for every task
+const generateId = () => {
+  return Math.round(
+    Math.random() * Math.random() * Math.pow(10, 15)
+  ).toString();
+};
 
+// show allert if task is added successfully or not
+const showAlert = (message, type) => {
+  alertMessage.innerHTML = ""; // every time we delete inside of alertmessage first 
+  const alert = document.createElement("p"); // then we create new p element
+  alert.innerText = message;
+  // console.log(alert);
+  alert.classList.add(`alert-${type}`); // for alert background color
+  alertMessage.append(alert);
+
+  // set a timer for hiding the alert message after 2 seconds
+  setTimeout(() => {
+    alert.style.visibility = "hidden";
+  }, 2000);
+};
+
+// the initial value of todos comes from localstorage and if it's null, empty array goes to todos
+const todos = JSON.parse(localStorage.getItem("todos")) || []; // or sign checks null value(false)
+console.log(todos);
+
+// function for saving new tasks into localstorage
+const saveToLocalStorage = () => {
+  localStorage.setItem("todos", JSON.stringify(todos));
+};
+
+// create list of tasks from localstorage
 const createList = () => {
   const tasks = JSON.parse(localStorage.getItem("taskData")); // getting back data from local storage
   console.log("tasks inside creatList function: ", tasks);
@@ -74,30 +106,28 @@ const createList = () => {
   }
 };
 
-let todos = [];
+// add new tasks 
 const addHandler = (event) => {
-
   const task = taskInput.value;
   const date = taskDate.value;
 
   const todo = {
-    task: task,
-    date: date,
+    id: generateId(),
     completed: false,
-  }
+    task,
+    date,
+  };
 
-  if(task) {
+  if (task) {
     todos.push(todo);
+    saveToLocalStorage();
     taskInput.value = "";
     taskDate.value = "";
-    alertMessage.innerHTML = "<p>Task added!</p>";
-    alertMessage.style.display = block
+    showAlert("Task added successfuly!", "success");
     console.log(todos);
   } else {
-    alarm("please enter a task!");
+    showAlert("please enter a task!", "error");
   }
-
-
 };
 
 const deleteAllHandler = (event) => {
@@ -134,8 +164,5 @@ createList();
 
 // add event listener for Add button
 addButton.addEventListener("click", addHandler);
+// add event listener for delet all button
 deleteAll.addEventListener("click", deleteAllHandler);
-
-for (let element of allPendingCompleted.children) {
-  element.addEventListener("click", filterHandler);
-}
