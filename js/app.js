@@ -28,7 +28,7 @@ const showAlert = (message, type) => {
 
 // the initial value of todos comes from localstorage and if it's null, empty array goes to todos
 const todos = JSON.parse(localStorage.getItem("todos")) || []; // or sign checks null value(false)
-console.log(todos);
+// console.log(todos);
 
 // function for saving new tasks into localstorage
 const saveToLocalStorage = () => {
