@@ -13,7 +13,7 @@ let todos = JSON.parse(localStorage.getItem("todos")) || []; // or sign checks n
 // function for saving new tasks into localstorage
 const saveToLocalStorage = () => {
   localStorage.setItem("todos", JSON.stringify(todos));
-}; 
+};
 
 // create uniqe Id for every task
 const generateId = () => {
@@ -24,7 +24,7 @@ const generateId = () => {
 
 // show allert if task is added successfully or not
 const showAlert = (message, type) => {
-  alertMessage.innerHTML = ""; // every time we delete inside of alertmessage first 
+  alertMessage.innerHTML = ""; // every time we delete inside of alertmessage first
   const alert = document.createElement("p"); // then we create new p element
   alert.innerText = message;
   // console.log(alert);
@@ -40,12 +40,12 @@ const showAlert = (message, type) => {
 // create list of tasks from localstorage
 const dispalayToDos = () => {
   todosBody.innerHTML = "";
-  if(!todos.length)  {
+  if (!todos.length) {
     todosBody.innerHTML = "<tr><td colspan='4'>No Task Found!</td></tr>";
     return;
   }
 
-  todos.forEach(todo => {
+  todos.forEach((todo) => {
     todosBody.innerHTML += `
       <tr>
         <td>${todo.task}</td>
@@ -57,12 +57,12 @@ const dispalayToDos = () => {
           <button onclick="deleteHandler('${todo.id}')">Delete</button>
         </td>
       </tr>
-    `
-    // to work with action buttons we give the element onclick attribute 
+    `;
+    // to work with action buttons we give the element onclick attribute
   });
-}
+};
 
-// add new tasks 
+// add new tasks
 const addHandler = (event) => {
   const task = taskInput.value;
   const date = taskDate.value;
@@ -79,7 +79,7 @@ const addHandler = (event) => {
     saveToLocalStorage();
     taskInput.value = "";
     taskDate.value = "";
-    dispalayToDos()
+    dispalayToDos();
     showAlert("Task added successfuly!", "success");
     // console.log(todos);
   } else {
@@ -91,25 +91,26 @@ const addHandler = (event) => {
 const deleteAllHandler = (event) => {
   // localStorage.clear();  // one way is like this
   // console.log("delte all");
-  if(todos.length) {  // second way to delete all tasks
-    todos = []
+  if (todos.length) {
+    // second way to delete all tasks
+    todos = [];
     saveToLocalStorage();
-    dispalayToDos()
-    showAlert("All tasks deleted successfully", "success")
-  } else showAlert("No Tasks to Delet", "error")
+    dispalayToDos();
+    showAlert("All tasks deleted successfully", "success");
+  } else showAlert("No Tasks to Delet", "error");
 };
 
 const deleteHandler = (id) => {
   // console.log(id);
-  const newToDos = todos.filter(e => e.id !== id);
+  const newToDos = todos.filter((e) => e.id !== id);
   // console.log(newToDos);
   todos = newToDos;
-  saveToLocalStorage()
+  saveToLocalStorage();
   dispalayToDos();
-}
+};
 
 // when window loads upload todos from local storag on the table
-window.addEventListener("load", dispalayToDos)
+window.addEventListener("load", dispalayToDos);
 
 // add event listener for Add button
 addButton.addEventListener("click", addHandler);
