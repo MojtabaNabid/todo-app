@@ -2,9 +2,12 @@ const taskInput = document.getElementById("task-input"); // selecting task input
 const taskDate = document.getElementById("date-input"); // selecting date input
 const addButton = document.getElementById("add-button"); // selecting the Add button
 const alertMessage = document.getElementById("alert-message"); // selecting the alert message
-const deleteAll = document.getElementById("delete-all-button");
-const todosBody = document.querySelector("tbody");
-// console.log(todosBody);
+const deleteAll = document.getElementById("delete-all-button"); // selecting "Delete All" button
+const todosBody = document.querySelector("tbody"); // selecting the Table
+const allButton = document.querySelector(".all"); // selecting All button
+const pendingButton = document.querySelector(".pending"); // selecting pending button
+const completedButton = document.querySelector(".completed"); // selecting Completed button
+// console.log(allButton);
 
 // the initial value of todos comes from localstorage and if it's null, empty array goes to todos
 let todos = JSON.parse(localStorage.getItem("todos")) || []; // or sign checks null value(false)
@@ -100,6 +103,7 @@ const deleteAllHandler = (event) => {
   } else showAlert("No Tasks to Delet", "error");
 };
 
+//TODO: complete this delete handler later
 const deleteHandler = (id) => {
   // console.log(id);
   const newToDos = todos.filter((e) => e.id !== id);
@@ -109,6 +113,16 @@ const deleteHandler = (id) => {
   dispalayToDos();
 };
 
+//TODO
+const filterHandler = (event) => {
+  console.log(event.srcElement.innerHTML);
+  if (event.srcElement.innerText == "All"){
+    dispalayToDos()
+  } else  {
+    deleteAllHandler();
+  }
+}
+
 // when window loads upload todos from local storag on the table
 window.addEventListener("load", dispalayToDos);
 
@@ -117,3 +131,11 @@ addButton.addEventListener("click", addHandler);
 
 // add event listener for delet all button
 deleteAll.addEventListener("click", deleteAllHandler);
+
+// +++++++++ Filter +++++++++
+// add event Listener for "All" button
+allButton.addEventListener("click", filterHandler);
+// add event Listener for "Pending" button
+pendingButton.addEventListener("click", filterHandler);
+// add event Listener for "Completed" button
+completedButton.addEventListener("click", filterHandler);
