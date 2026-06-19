@@ -55,8 +55,8 @@ const dispalayToDos = () => {
         <td>${todo.date || "No Date"}</td>
         <td>${todo.completed ? "Completed" : "Pending"}</td>
         <td>
-          <button>Edit</button>
-          <button>Do</button>
+          <button onClick="editHandler('${todo.id}')">Edit</button>
+          <button onclick="doHandler('${todo.id}')">Do</button>
           <button onclick="deleteHandler('${todo.id}')">Delete</button>
         </td>
       </tr>
@@ -69,7 +69,7 @@ const dispalayToDos = () => {
 const addHandler = (event) => {
   const task = taskInput.value;
   const date = taskDate.value;
-
+   
   const todo = {
     id: generateId(),
     completed: false,
@@ -103,7 +103,7 @@ const deleteAllHandler = (event) => {
   } else showAlert("No Tasks to Delet", "error");
 };
 
-//TODO: complete this delete handler later
+// Delete Action button for every task (the red button)
 const deleteHandler = (id) => {
   // console.log(id);
   const newToDos = todos.filter((e) => e.id !== id);
@@ -112,6 +112,23 @@ const deleteHandler = (id) => {
   saveToLocalStorage();
   dispalayToDos();
 };
+
+// Do Action Button 
+const doHandler = (id) => {
+  const newStatus = todos.map((e) => {
+    if (e.id == id) {
+      e.completed = true;
+      return e
+    } else return e
+  })
+  todos = newStatus; 
+  saveToLocalStorage();
+  dispalayToDos();
+}
+
+const editHandler = (id) => {
+  taskInput == 
+}
 
 //TODO
 const filterHandler = (event) => {
