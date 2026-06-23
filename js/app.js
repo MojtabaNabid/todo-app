@@ -21,7 +21,7 @@ const saveToLocalStorage = () => {
 // create uniqe Id for every task
 const generateId = () => {
   return Math.round(
-    Math.random() * Math.random() * Math.pow(10, 15)
+    Math.random() * Math.random() * Math.pow(10, 15),
   ).toString();
 };
 
@@ -65,28 +65,44 @@ const dispalayToDos = () => {
   });
 };
 
+//FIXME
 // add new tasks
 const addHandler = (event) => {
-  const task = taskInput.value;
-  const date = taskDate.value;
-   
-  const todo = {
-    id: generateId(),
-    completed: false,
-    task,
-    date,
-  };
-
-  if (task) {
-    todos.push(todo);
+  if (editFlag.status) {
+    // check if it is edit action or new task
+    todos.forEach((e) => {
+      //the task that should be edited
+      if (e.id == editFlag.id) {
+        e.task = taskInput.value;
+        e.date = taskDate.value;
+      }
+    });
     saveToLocalStorage();
     taskInput.value = "";
     taskDate.value = "";
+    editFlag.status = false;
     dispalayToDos();
-    showAlert("Task added successfuly!", "success");
-    // console.log(todos);
-  } else {
-    showAlert("please enter a task!", "error");
+    showAlert("Task Edited successfuly!", "success");
+  } else if (!editFlag.status) {
+    const task = taskInput.value;
+    const date = taskDate.value;
+    const todo = {
+      id: generateId(),
+      completed: false,
+      task,
+      date,
+    };
+    if (task) {
+      todos.push(todo);
+      saveToLocalStorage();
+      taskInput.value = "";
+      taskDate.value = "";
+      dispalayToDos();
+      showAlert("Task added successfuly!", "success");
+      // console.log(todos);
+    } else {
+      showAlert("please enter a task!", "error");
+    }
   }
 };
 
@@ -113,32 +129,44 @@ const deleteHandler = (id) => {
   dispalayToDos();
 };
 
-// Do Action Button 
+// Do Action Button
 const doHandler = (id) => {
   const newStatus = todos.map((e) => {
     if (e.id == id) {
       e.completed = true;
-      return e
-    } else return e
-  })
-  todos = newStatus; 
+      return e;
+    } else return e;
+  });
+  todos = newStatus;
   saveToLocalStorage();
   dispalayToDos();
-}
+};
 
+//Edit a Task
+const editFlag = {
+  status: false, // this flag shows that "is it a new task or the Task already exist and it only needs to be edited..."
+  id: 0, // the Id of the Task that should be edited
+};
 const editHandler = (id) => {
-  taskInput == 
-}
+  editFlag.status = true;
+  editFlag.id = id;
+  const taskWillEdit = todos.filter((e) => {
+    if (e.id == id) {
+      taskInput.value = e.task;
+      taskDate.value = e.date;
+    }
+  });
+};
 
 //TODO
 const filterHandler = (event) => {
   console.log(event.srcElement.innerHTML);
-  if (event.srcElement.innerText == "All"){
-    dispalayToDos()
-  } else  {
+  if (event.srcElement.innerText == "All") {
+    dispalayToDos();
+  } else {
     deleteAllHandler();
   }
-}
+};
 
 // when window loads upload todos from local storag on the table
 window.addEventListener("load", dispalayToDos);
