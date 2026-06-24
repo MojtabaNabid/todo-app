@@ -7,11 +7,14 @@ const todosBody = document.querySelector("tbody"); // selecting the Table
 const allButton = document.querySelector(".all"); // selecting All button
 const pendingButton = document.querySelector(".pending"); // selecting pending button
 const completedButton = document.querySelector(".completed"); // selecting Completed button
-// console.log(allButton);
+// const statusCell = document.querySelector("td");
+// console.log(statusCell);
 
 // the initial value of todos comes from localstorage and if it's null, empty array goes to todos
 let todos = JSON.parse(localStorage.getItem("todos")) || []; // or sign checks null value(false)
 // console.log(todos);
+let todosFiltered = todos;
+// console.log(todosFiltered);
 
 // function for saving new tasks into localstorage
 const saveToLocalStorage = () => {
@@ -47,8 +50,8 @@ const dispalayToDos = () => {
     todosBody.innerHTML = "<tr><td colspan='4'>No Task Found!</td></tr>";
     return;
   }
-
-  todos.forEach((todo) => {
+  const objectToShow = filterFlag ? todosFiltered : todos;
+  objectToShow.forEach((todo) => {
     todosBody.innerHTML += `
       <tr>
         <td>${todo.task}</td>
@@ -65,8 +68,7 @@ const dispalayToDos = () => {
   });
 };
 
-//FIXME
-// add new tasks
+// add new tasks (Add Button)
 const addHandler = (event) => {
   if (editFlag.status) {
     // check if it is edit action or new task
@@ -133,7 +135,7 @@ const deleteHandler = (id) => {
 const doHandler = (id) => {
   const newStatus = todos.map((e) => {
     if (e.id == id) {
-      e.completed = true;
+      e.completed = !e.completed;
       return e;
     } else return e;
   });
@@ -142,7 +144,7 @@ const doHandler = (id) => {
   dispalayToDos();
 };
 
-//Edit a Task
+//Edit a Task (Edit Action Button)
 const editFlag = {
   status: false, // this flag shows that "is it a new task or the Task already exist and it only needs to be edited..."
   id: 0, // the Id of the Task that should be edited
@@ -158,26 +160,40 @@ const editHandler = (id) => {
   });
 };
 
-//TODO
+// filter buttons (All, Pending, Completed)
+let filterFlag = false;
 const filterHandler = (event) => {
-  console.log(event.srcElement.innerHTML);
+  console.log(event);
+  
   if (event.srcElement.innerText == "All") {
+    filterFlag = false;
     dispalayToDos();
-  } else {
-    deleteAllHandler();
+  } 
+  else if(event.srcElement.innerText == "Pending") {
+    filterFlag = true;
+    todosFiltered = todos.filter((e) => e.completed == false);
+    dispalayToDos()
+    filterFlag = false;
+  } 
+  else if (event.srcElement.innerText == "Completed") {
+    filterFlag = true;
+    todosFiltered = todos.filter((e) => e.completed == true);
+    dispalayToDos()
+    filterFlag = false;
   }
 };
 
-// when window loads upload todos from local storag on the table
+
+// First Load => showing Tasks from LocalStorage
 window.addEventListener("load", dispalayToDos);
 
-// add event listener for Add button
+// Add button
 addButton.addEventListener("click", addHandler);
 
-// add event listener for delet all button
+// Delet all button
 deleteAll.addEventListener("click", deleteAllHandler);
 
-// +++++++++ Filter +++++++++
+// +++++++++ Filters +++++++++
 // add event Listener for "All" button
 allButton.addEventListener("click", filterHandler);
 // add event Listener for "Pending" button
