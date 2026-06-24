@@ -7,8 +7,7 @@ const todosBody = document.querySelector("tbody"); // selecting the Table
 const allButton = document.querySelector(".all"); // selecting All button
 const pendingButton = document.querySelector(".pending"); // selecting pending button
 const completedButton = document.querySelector(".completed"); // selecting Completed button
-// const statusCell = document.querySelector("td");
-// console.log(statusCell);
+
 
 // the initial value of todos comes from localstorage and if it's null, empty array goes to todos
 let todos = JSON.parse(localStorage.getItem("todos")) || []; // or sign checks null value(false)
@@ -56,16 +55,25 @@ const dispalayToDos = () => {
       <tr>
         <td>${todo.task}</td>
         <td>${todo.date || "No Date"}</td>
-        <td>${todo.completed ? "Completed" : "Pending"}</td>
+        <td class="status">${todo.completed ? "Completed" : "Pending"}</td>
         <td>
+        <!-- work with action buttons we give the element onclick attribute -->
           <button onClick="editHandler('${todo.id}')">Edit</button>
           <button onclick="doHandler('${todo.id}')">Do</button>
           <button onclick="deleteHandler('${todo.id}')">Delete</button>
         </td>
       </tr>
     `;
-    // to work with action buttons we give the element onclick attribute
   });
+  // Change the backgroundColor of Completed tasks to green
+  const statusCell = document.querySelectorAll(".status");
+  let parentElement = [];
+  statusCell.forEach((e) => {
+    if(e.innerHTML == "Completed") {
+      e.style.backgroundColor = "green";
+      e.style.color = "white";
+    }
+  })
 };
 
 // add new tasks (Add Button)
