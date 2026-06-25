@@ -27,7 +27,7 @@ const generateId = () => {
   ).toString();
 };
 
-// show allert if task is added successfully or not
+// show alert if task is added successfully or not
 const showAlert = (message, type) => {
   alertMessage.innerHTML = ""; // every time we delete inside of alertmessage first
   const alert = document.createElement("p"); // then we create new p element
@@ -43,13 +43,14 @@ const showAlert = (message, type) => {
 };
 
 // create list of tasks from localstorage
-const dispalayToDos = () => {
+const displayToDos = () => {
   todosBody.innerHTML = "";
-  if (!todos.length) {
+  // document.createElement("tbody").innerText = "";
+  const objectToShow = filterFlag ? todosFiltered : todos;
+  if (!objectToShow.length) {
     todosBody.innerHTML = "<tr><td colspan='4'>No Task Found!</td></tr>";
     return;
   }
-  const objectToShow = filterFlag ? todosFiltered : todos;
   objectToShow.forEach((todo) => {
     todosBody.innerHTML += `
       <tr>
@@ -91,10 +92,10 @@ const addHandler = (event) => {
     taskInput.value = "";
     taskDate.value = "";
     editFlag.status = false;
-    dispalayToDos();
-    showAlert("Task Edited successfuly!", "success");
+    displayToDos();
+    showAlert("Task Edited successfully!", "success");
   } else if (!editFlag.status) {
-    const task = taskInput.value;
+    const task = taskInput.value.trim();  // using trim() to avoid spaces
     const date = taskDate.value;
     const todo = {
       id: generateId(),
@@ -107,7 +108,7 @@ const addHandler = (event) => {
       saveToLocalStorage();
       taskInput.value = "";
       taskDate.value = "";
-      dispalayToDos();
+      displayToDos();
       showAlert("Task added successfuly!", "success");
       // console.log(todos);
     } else {
@@ -124,9 +125,9 @@ const deleteAllHandler = (event) => {
     // second way to delete all tasks
     todos = [];
     saveToLocalStorage();
-    dispalayToDos();
+    displayToDos();
     showAlert("All tasks deleted successfully", "success");
-  } else showAlert("No Tasks to Delet", "error");
+  } else showAlert("No Tasks to Delete", "error");
 };
 
 // Delete Action button for every task (the red button)
@@ -136,7 +137,7 @@ const deleteHandler = (id) => {
   // console.log(newToDos);
   todos = newToDos;
   saveToLocalStorage();
-  dispalayToDos();
+  displayToDos();
 };
 
 // Do Action Button
@@ -149,7 +150,7 @@ const doHandler = (id) => {
   });
   todos = newStatus;
   saveToLocalStorage();
-  dispalayToDos();
+  displayToDos();
 };
 
 //Edit a Task (Edit Action Button)
@@ -160,7 +161,7 @@ const editFlag = {
 const editHandler = (id) => {
   editFlag.status = true;
   editFlag.id = id;
-  const taskWillEdit = todos.filter((e) => {
+  const taskWillEdit = todos.find((e) => {
     if (e.id == id) {
       taskInput.value = e.task;
       taskDate.value = e.date;
@@ -171,34 +172,35 @@ const editHandler = (id) => {
 // filter buttons (All, Pending, Completed)
 let filterFlag = false;
 const filterHandler = (event) => {
-  console.log(event);
+  // console.log(event);
   
-  if (event.srcElement.innerText == "All") {
+  if (event.target.innerText == "All") {
     filterFlag = false;
-    dispalayToDos();
+    displayToDos();
   } 
-  else if(event.srcElement.innerText == "Pending") {
+  else if(event.target.innerText == "Pending") {
     filterFlag = true;
     todosFiltered = todos.filter((e) => e.completed == false);
-    dispalayToDos()
+    displayToDos()
     filterFlag = false;
   } 
-  else if (event.srcElement.innerText == "Completed") {
+  else if (event.target.innerText == "Completed") {
     filterFlag = true;
     todosFiltered = todos.filter((e) => e.completed == true);
-    dispalayToDos()
+    // console.log(todosFiltered);
+    displayToDos()
     filterFlag = false;
   }
 };
 
 
 // First Load => showing Tasks from LocalStorage
-window.addEventListener("load", dispalayToDos);
+window.addEventListener("load", displayToDos);
 
 // Add button
 addButton.addEventListener("click", addHandler);
 
-// Delet all button
+// Delete all button
 deleteAll.addEventListener("click", deleteAllHandler);
 
 // +++++++++ Filters +++++++++
