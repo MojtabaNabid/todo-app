@@ -8,7 +8,6 @@ const allButton = document.querySelector(".all"); // selecting All button
 const pendingButton = document.querySelector(".pending"); // selecting pending button
 const completedButton = document.querySelector(".completed"); // selecting Completed button
 
-
 // the initial value of todos comes from localstorage and if it's null, empty array goes to todos
 let todos = JSON.parse(localStorage.getItem("todos")) || []; // or sign checks null value(false)
 // console.log(todos);
@@ -52,29 +51,61 @@ const displayToDos = () => {
     return;
   }
   objectToShow.forEach((todo) => {
-    todosBody.innerHTML += `
-      <tr>
-        <td>${todo.task}</td>
-        <td>${todo.date || "No Date"}</td>
-        <td class="status">${todo.completed ? "Completed" : "Pending"}</td>
-        <td>
-        <!-- work with action buttons we give the element onclick attribute -->
-          <button onClick="editHandler('${todo.id}')">Edit</button>
-          <button onclick="doHandler('${todo.id}')">Do</button>
-          <button onclick="deleteHandler('${todo.id}')">Delete</button>
-        </td>
-      </tr>
-    `;
+    const tr = document.createElement("tr");
+
+    const tdTask = document.createElement("td");
+    const tdDate = document.createElement("td");
+    const tdStatus = document.createElement("td");
+    const tdAction = document.createElement("td");
+
+    tdStatus.classList.add("status");
+
+    const btnEdit = document.createElement("button");
+    const btnDo = document.createElement("button");
+    const btnDelete = document.createElement("button");
+
+    btnEdit.textContent = "Edit";
+    btnDo.textContent = "Do";
+    btnDelete.textContent = "Delete";
+
+    tdTask.textContent = todo.task;
+    tdDate.textContent = todo.date || "No Date";
+    tdStatus.textContent = todo.completed ? "Completed" : "Pending";
+
+    btnEdit.addEventListener("click", () => editHandler(todo.id)); // use arrow function to call the handler after the button has clicked (if I don't use arrow function and write the name of the handler directly it will call the handler when the button has been created not when I press it)
+    btnDo.addEventListener("click", () => doHandler(todo.id));
+    btnDelete.addEventListener("click", () => deleteHandler(todo.id));
+
+    tdAction.append(btnEdit, btnDo, btnDelete);
+    tr.append(tdTask, tdDate, tdStatus, tdAction);
+
+    // console.log(tr);
+
+    todosBody.append(tr);
+
+    // todosBody.innerHTML += `
+    //   <tr>
+    //     <td>${todo.task}</td>
+    //     <td>${todo.date || "No Date"}</td>
+    //     <td class="status">${todo.completed ? "Completed" : "Pending"}</td>
+    //     <td>
+    //     <!-- work with action buttons we give the element onclick attribute -->
+    //       <button onClick="editHandler('${todo.id}')">Edit</button>
+    //       <button onclick="doHandler('${todo.id}')">Do</button>
+    //       <button onclick="deleteHandler('${todo.id}')">Delete</button>
+    //     </td>
+    //   </tr>
+    // `;
   });
   // Change the backgroundColor of Completed tasks to green
   const statusCell = document.querySelectorAll(".status");
   let parentElement = [];
   statusCell.forEach((e) => {
-    if(e.innerHTML == "Completed") {
+    if (e.innerHTML == "Completed") {
       e.style.backgroundColor = "green";
       e.style.color = "white";
     }
-  })
+  });
 };
 
 // add new tasks (Add Button)
@@ -95,7 +126,7 @@ const addHandler = (event) => {
     displayToDos();
     showAlert("Task Edited successfully!", "success");
   } else if (!editFlag.status) {
-    const task = taskInput.value.trim();  // using trim() to avoid spaces
+    const task = taskInput.value.trim(); // using trim() to avoid spaces
     const date = taskDate.value;
     const todo = {
       id: generateId(),
@@ -173,26 +204,23 @@ const editHandler = (id) => {
 let filterFlag = false;
 const filterHandler = (event) => {
   // console.log(event);
-  
+
   if (event.target.innerText == "All") {
     filterFlag = false;
     displayToDos();
-  } 
-  else if(event.target.innerText == "Pending") {
+  } else if (event.target.innerText == "Pending") {
     filterFlag = true;
     todosFiltered = todos.filter((e) => e.completed == false);
-    displayToDos()
+    displayToDos();
     filterFlag = false;
-  } 
-  else if (event.target.innerText == "Completed") {
+  } else if (event.target.innerText == "Completed") {
     filterFlag = true;
     todosFiltered = todos.filter((e) => e.completed == true);
     // console.log(todosFiltered);
-    displayToDos()
+    displayToDos();
     filterFlag = false;
   }
 };
-
 
 // First Load => showing Tasks from LocalStorage
 window.addEventListener("load", displayToDos);
